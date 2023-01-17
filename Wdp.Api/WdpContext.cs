@@ -15,9 +15,10 @@ namespace Wdp.Api
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<FavWebsite>().ToTable("fav_websites");
-
+            new FavWebsiteEntityTypeConfiguration().Configure(modelBuilder.Entity<FavWebsite>());
             new UserEntityTypeConfiguration().Configure(modelBuilder.Entity<Users>());
+            new BillDetailEntityTypeConfiguration().Configure(modelBuilder.Entity<BillDetail>());
+            new OpConfigEntityTypeConfiguration().Configure(modelBuilder.Entity<OpConfig>());
         }
     }
 }
