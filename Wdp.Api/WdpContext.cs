@@ -8,6 +8,7 @@ namespace Wdp.Api
         public DbSet<FavWebsite> FavWebsites { get; set; }
         public DbSet<Users> Users { get; set; }
         public DbSet<OpConfig> OpConfigs { get; set; }
+        public DbSet<BillDetail> BillDetails { get; set; }
 
         public WdpContext(DbContextOptions<WdpContext> options):base(options)
         {

@@ -15,7 +15,7 @@
         /// </summary>
         public string Message { get; set; }
 
-        public static ResponseModel Success(object data,string message="操作成功")
+        public static ResponseModel Success(object? data,string message="操作成功")
         {
             return new ResponseModel
             {
@@ -25,12 +25,12 @@
             };
         }
 
-        public static ResponseModel Error(object data,string message="操作失败")
+        public static ResponseModel Error(string message="操作失败")
         {
             return new ResponseModel
             {
                 Status = ResponseStatus.Error,
-                Data = data,
+                Data = null,
                 Message = message
             };
         }
