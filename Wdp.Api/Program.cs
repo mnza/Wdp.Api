@@ -1,11 +1,19 @@
 using Microsoft.EntityFrameworkCore;
 using Wdp.Api;
+using Wdp.Api.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers(options =>
+{
+    //注册全局过滤器服务
+    options.Filters.Add(typeof(GlobalExceptionsFilter));
+    options.Filters.Add(typeof(GlobalAppFilter));
+});
+
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

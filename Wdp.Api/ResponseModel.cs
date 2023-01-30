@@ -5,11 +5,11 @@
         /// <summary>
         /// 状态 1-成功 2-失败
         /// </summary>
-        public int Status { get; set; }
+        public ResponseStatus Status { get; set; }
         /// <summary>
         /// 返回数据
         /// </summary>
-        public object Data { get; set; }
+        public object? Data { get; set; }
         /// <summary>
         /// 提示信息
         /// </summary>
@@ -19,7 +19,7 @@
         {
             return new ResponseModel
             {
-                Status = 1,
+                Status = ResponseStatus.Success,
                 Data = data,
                 Message = message
             };
@@ -29,12 +29,16 @@
         {
             return new ResponseModel
             {
-                Status = 0,
+                Status = ResponseStatus.Error,
                 Data = data,
                 Message = message
             };
         }
+    }
 
-
+    public enum ResponseStatus
+    {
+        Error,
+        Success
     }
 }
