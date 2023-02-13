@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Wdp.Api.Models
 {
-    public class UserEntityTypeConfiguration : IEntityTypeConfiguration<Users>
+    public class UserEntityTypeConfiguration : IEntityTypeConfiguration<User>
     {
-        public void Configure(EntityTypeBuilder<Users> builder)
+        public void Configure(EntityTypeBuilder<User> builder)
         {
             builder.ToTable("users").HasKey(u => u.UserId);
             //主键自增

@@ -1,6 +1,6 @@
 ﻿namespace Wdp.Api.Models
 {
-    public class Users
+    public class User
     {
         /// <summary>
         /// 用户ID

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Wdp.Api;
 
@@ -10,9 +11,10 @@ using Wdp.Api;
 namespace Wdp.Api.Migrations
 {
     [DbContext(typeof(WdpContext))]
-    partial class WdpContextModelSnapshot : ModelSnapshot
+    [Migration("20230203053900_AddBillMaster")]
+    partial class AddBillMaster
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -58,6 +60,7 @@ namespace Wdp.Api.Migrations
                         .HasColumnType("double");
 
                     b.Property<string>("Remark")
+                        .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("varchar(200)");
 
@@ -92,6 +95,7 @@ namespace Wdp.Api.Migrations
                         .HasColumnName("bill_name");
 
                     b.Property<string>("Remark")
+                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<int>("UserId")

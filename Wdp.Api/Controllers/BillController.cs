@@ -15,12 +15,20 @@ namespace Wdp.Api.Controllers
             this.db = db;
         }
 
-        [HttpGet]
-        public async Task<List<BillDetail>> GetBillDetailsByUserId(int userId)
+        //[HttpGet]
+        //public async Task<List<BillDetail>> GetBillDetailsByUserId(int userId)
+        //{
+        //    return await db.BillDetails.Where(b => b.BillMaster == userId).OrderByDescending(b => b.BillDateTime).ToListAsync();
+        //}
+        [HttpGet("/billmaster")]
+        public async Task<List<BillMaster>> AddBillMaster()
         {
-            return await db.BillDetails.Where(b => b.UserId == userId).OrderByDescending(b => b.BillDateTime).ToListAsync();
-        }
+            var master = await db.BillMasters.Include(b => b.BillDetails).ToListAsync();
 
+
+
+            return master;
+        }
         [HttpPost]
         public async Task<bool> Add(BillDetail bill)
         {
@@ -30,9 +38,9 @@ namespace Wdp.Api.Controllers
         }
 
         [HttpDelete]
-        public async Task<ResponseModel> Delete(int id)
+        public async Task<ResponseModel> Delete(string id)
         {
-            var bill = await db.BillDetails.Where((b) => b.Id == id).FirstOrDefaultAsync();
+            var bill = await db.BillDetails.Where((b) => b.DetailId.ToString() == id).FirstOrDefaultAsync();
 
             if (bill == null)
             {

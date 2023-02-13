@@ -1,25 +1,18 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using System.Diagnostics;
 using System.Net;
 
 namespace Wdp.Api.Filters
 {
     public class GlobalAppFilter : Attribute, IActionFilter
     {
-        /// <summary>
-        /// 请求时长计时开始
-        /// </summary>
-        private readonly Stopwatch watch = new Stopwatch();
-
         public void OnActionExecuted(ActionExecutedContext context)
         {
-            watch.Stop();
             //根据实际需求进行具体实现
             if (context.Result is ObjectResult)
             {
                 var objectResult = context.Result as ObjectResult;
-                if (objectResult.Value == null)
+                if (objectResult?.Value == null)
                 {
                     context.Result = new ObjectResult(new ResponseModel
                     {
@@ -67,18 +60,21 @@ namespace Wdp.Api.Filters
             }
             else if (context.Result is StatusCodeResult)
             {
-                context.Result = new ObjectResult(new { HttpStatus = (context.Result as StatusCodeResult).StatusCode, TimeOut = watch.ElapsedMilliseconds, Message = "" });
+                context.Result = new ObjectResult(new { HttpStatus = (context.Result as StatusCodeResult).StatusCode, Message = "" });
             }
             else if (context.Result is Exception)
             {
                 var result = context.Result as Exception;
-                context.Result = new ObjectResult(new { HttpStatus = HttpStatusCode.BadRequest, TimeOut = watch.ElapsedMilliseconds, Message = result.Message });
+                context.Result = new ObjectResult(new { HttpStatus = HttpStatusCode.BadRequest, Message = result.Message });
             }
         }
 
         public void OnActionExecuting(ActionExecutingContext context)
         {
-            watch.Start();
+            Console.WriteLine("过滤器到此一游");
+            //context.HttpContext.Response.StatusCode = 302;
+            //context.HttpContext.Response.Headers.Location = "https://www.baidu.com";
         }
+
     }
 }

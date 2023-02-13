@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Wdp.Api;
 
@@ -10,9 +11,10 @@ using Wdp.Api;
 namespace Wdp.Api.Migrations
 {
     [DbContext(typeof(WdpContext))]
-    partial class WdpContextModelSnapshot : ModelSnapshot
+    [Migration("20230203061453_updateBillMaster")]
+    partial class updateBillMaster
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
