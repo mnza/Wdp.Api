@@ -18,7 +18,7 @@ namespace Wdp.Api.Models
             builder.Property(b => b.OperatorTime).HasColumnName("operator_time").HasColumnType("datetime").HasDefaultValueSql("CURRENT_TIMESTAMP");
 
             
-            builder.HasOne<BillMaster>(b => b.BillMaster).WithMany(b => b.BillDetails).IsRequired();
+            builder.HasOne<BillMaster>(b => b.BillMaster).WithMany(c => c.BillDetails);
         }
     }
 }

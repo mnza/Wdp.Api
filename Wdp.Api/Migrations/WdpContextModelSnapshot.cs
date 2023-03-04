@@ -95,10 +95,11 @@ namespace Wdp.Api.Migrations
                         .HasColumnType("longtext");
 
                     b.Property<int>("UserId")
-                        .HasColumnType("int")
-                        .HasColumnName("user_id");
+                        .HasColumnType("int");
 
                     b.HasKey("BillId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("bill_master", (string)null);
                 });
@@ -135,11 +136,13 @@ namespace Wdp.Api.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("varchar(200)");
 
-                    b.Property<int>("UserId")
+                    b.Property<int?>("UserId")
                         .HasColumnType("int")
                         .HasColumnName("user_id");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("fav_websites", (string)null);
                 });
@@ -179,7 +182,7 @@ namespace Wdp.Api.Migrations
                     b.ToTable("op_config", (string)null);
                 });
 
-            modelBuilder.Entity("Wdp.Api.Models.Users", b =>
+            modelBuilder.Entity("Wdp.Api.Models.User", b =>
                 {
                     b.Property<int>("UserId")
                         .ValueGeneratedOnAdd()
@@ -228,6 +231,26 @@ namespace Wdp.Api.Migrations
                         .IsRequired();
 
                     b.Navigation("BillMaster");
+                });
+
+            modelBuilder.Entity("Wdp.Api.Models.BillMaster", b =>
+                {
+                    b.HasOne("Wdp.Api.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Wdp.Api.Models.FavWebsite", b =>
+                {
+                    b.HasOne("Wdp.Api.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Wdp.Api.Models.BillMaster", b =>

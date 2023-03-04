@@ -11,7 +11,7 @@ using Wdp.Api;
 namespace Wdp.Api.Migrations
 {
     [DbContext(typeof(WdpContext))]
-    [Migration("20230117030007_init")]
+    [Migration("20230301100016_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -23,16 +23,20 @@ namespace Wdp.Api.Migrations
 
             modelBuilder.Entity("Wdp.Api.Models.BillDetail", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("DetailId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("char(36)")
+                        .HasColumnName("detail_id");
 
                     b.Property<double>("Amount")
                         .HasColumnType("double");
 
                     b.Property<DateTime>("BillDateTime")
-                        .HasColumnType("datetime(6)")
+                        .HasColumnType("datetime")
                         .HasColumnName("bill_date_time");
+
+                    b.Property<Guid>("BillMasterBillId")
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("ItemName")
                         .IsRequired()
@@ -56,17 +60,50 @@ namespace Wdp.Api.Migrations
                         .HasColumnType("double");
 
                     b.Property<string>("Remark")
-                        .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("varchar(200)");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int")
-                        .HasColumnName("user_id");
+                    b.HasKey("DetailId");
 
-                    b.HasKey("Id");
+                    b.HasIndex("BillMasterBillId");
 
                     b.ToTable("bill_detail", (string)null);
+                });
+
+            modelBuilder.Entity("Wdp.Api.Models.BillMaster", b =>
+                {
+                    b.Property<Guid>("BillId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)")
+                        .HasColumnName("bill_id");
+
+                    b.Property<DateTime>("BillDateTime")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasColumnName("bill_date_time")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<double>("BillMoney")
+                        .HasColumnType("double")
+                        .HasColumnName("bill_money");
+
+                    b.Property<string>("BillName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)")
+                        .HasColumnName("bill_name");
+
+                    b.Property<string>("Remark")
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("BillId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("bill_master", (string)null);
                 });
 
             modelBuilder.Entity("Wdp.Api.Models.FavWebsite", b =>
@@ -101,11 +138,13 @@ namespace Wdp.Api.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("varchar(200)");
 
-                    b.Property<int>("UserId")
+                    b.Property<int?>("UserId")
                         .HasColumnType("int")
                         .HasColumnName("user_id");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("fav_websites", (string)null);
                 });
@@ -145,7 +184,7 @@ namespace Wdp.Api.Migrations
                     b.ToTable("op_config", (string)null);
                 });
 
-            modelBuilder.Entity("Wdp.Api.Models.Users", b =>
+            modelBuilder.Entity("Wdp.Api.Models.User", b =>
                 {
                     b.Property<int>("UserId")
                         .ValueGeneratedOnAdd()
@@ -183,6 +222,42 @@ namespace Wdp.Api.Migrations
                     b.HasKey("UserId");
 
                     b.ToTable("users", (string)null);
+                });
+
+            modelBuilder.Entity("Wdp.Api.Models.BillDetail", b =>
+                {
+                    b.HasOne("Wdp.Api.Models.BillMaster", "BillMaster")
+                        .WithMany("BillDetails")
+                        .HasForeignKey("BillMasterBillId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("BillMaster");
+                });
+
+            modelBuilder.Entity("Wdp.Api.Models.BillMaster", b =>
+                {
+                    b.HasOne("Wdp.Api.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Wdp.Api.Models.FavWebsite", b =>
+                {
+                    b.HasOne("Wdp.Api.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Wdp.Api.Models.BillMaster", b =>
+                {
+                    b.Navigation("BillDetails");
                 });
 #pragma warning restore 612, 618
         }

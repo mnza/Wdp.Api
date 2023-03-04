@@ -13,7 +13,7 @@ namespace Wdp.Api.Models
             builder.Property(b => b.BillDateTime).HasColumnName("bill_date_time").HasColumnType("datetime").HasDefaultValueSql("CURRENT_TIMESTAMP");
             builder.Property(b => b.BillName).HasColumnName("bill_name").IsRequired().HasMaxLength(50);
             builder.Property(b => b.Remark).IsRequired(false);
-
+            builder.HasOne(b => b.User).WithMany();
         }
     }
 }

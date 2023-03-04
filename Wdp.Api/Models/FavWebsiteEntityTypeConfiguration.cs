@@ -13,9 +13,12 @@ namespace Wdp.Api.Models
             builder.Property(b => b.Id).ValueGeneratedOnAdd();
             builder.Property(b => b.Name).HasMaxLength(20).IsRequired();
             builder.Property(b => b.Url).HasMaxLength(200).IsRequired();
-            builder.Property(b => b.UserId).HasColumnName("user_id").IsRequired();
             builder.Property(b => b.Category).HasMaxLength(20);
             builder.Property(b => b.Icon).HasMaxLength(200);
+            builder.Property(b => b.UserId).HasColumnName("user_id");
+            builder.Ignore(b => b.User);
+
+            builder.HasOne(f => f.User).WithMany();
         }
     }
 }

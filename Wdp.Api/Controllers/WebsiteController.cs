@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Wdp.Api.Models;
 
@@ -39,7 +38,13 @@ namespace Wdp.Api.Controllers
         [HttpGet]
         public async Task<List<FavWebsite>> GetWebsiteByUserId(int userId)
         {
-            return await db.FavWebsites.Where(b => b.UserId == userId).ToListAsync();
+            var user = await db.Users.Where(u => u.UserId == userId).FirstOrDefaultAsync();
+            if (user != null)
+            {
+                return await db.FavWebsites.Where(b => b.User == user).ToListAsync();
+            }
+            
+            return new List<FavWebsite>();
         }
     }
 }
